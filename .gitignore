@@ -1,0 +1,7 @@
+.clj-kondo/
+.cpcache/
+.lsp/
+.direnv/
+result*
+.nrepl-port
+*.json

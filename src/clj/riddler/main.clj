@@ -69,10 +69,10 @@
            [:body
             [:section.grid grid]
             [:section.questions.questions--h
-             [:span.title "Waagrecht"]
+             [:span.title "Waagrecht:"]
              (get-questions "h" questions)]
             [:section.questions.questions--v
-             [:span.title "Senkrecht"]
+             [:span.title "Senkrecht:"]
              (get-questions "v" questions)]])))
 
 (comment

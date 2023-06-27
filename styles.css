@@ -31,11 +31,15 @@
     display: flex;
 }
 .title, .question__id {
+    font-family: sans-serif;
     font-weight: bold;
     padding-right: 1mm;
 }
 .questions {
     padding-top: 3mm;
+}
+.title {
+
 }
 .question {
     padding-right: 1mm;

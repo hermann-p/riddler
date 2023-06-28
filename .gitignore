@@ -5,3 +5,5 @@
 result*
 .nrepl-port
 *.json
+*.html
+cache.edn

@@ -1,24 +1,24 @@
 (require '[riddler.main :refer [read-input transform-input parse-input]])
 (require '[babashka.cli :as cli])
 (require '[babashka.curl :as curl])
+(require '[babashka.fs :as fs])
 (import java.util.UUID)
 
 (def cache-file "cache.edn")
 (def riddle-source "https://spiele.zeit.de/eckeapi/game")
 
-(def cli-options {:url {:coerce :string}
-                  :file {:coerce :string}
-                  :riddle-number {:coerce :string}})
+(def cli-options {:url    {:coerce :string}
+                  :file   {:coerce :string}
+                  :number {:coerce :string}})
 
 (defn display-riddle [input]
   (->> input transform-input (format "%s") println))
 
 (defn create-from-json [file-name]
   (display-riddle (read-input file-name)))
-  
 
 (defn with-cached-url [url f]
-  (let [cache (if (.exists (io/file cache-file))
+  (let [cache (if (fs/exists? cache-file)
                (read-string (slurp cache-file))
                {})]
     (if-let [cached-file (get cache url)]
@@ -36,10 +36,10 @@
   (format "%s/%s" riddle-source riddle-number))
   
 
-(defn exec [{:keys [url file riddle-number]}]
+(defn exec [{:keys [url file number]}]
   (cond
-    file          (create-from-json file)
-    url           (create-from-url url)
-    riddle-number (create-from-url (build-riddle-url riddle-number))))
+    file   (create-from-json file)
+    url    (create-from-url url)
+    number (create-from-url (build-riddle-url number))))
 
 (exec (cli/parse-opts *command-line-args* {:spec cli-options}))

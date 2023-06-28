@@ -7,3 +7,4 @@ result*
 *.json
 *.html
 cache.edn
+create-riddle

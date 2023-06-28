@@ -66,8 +66,7 @@
               [:div.grid-row (for [x (range 1 (inc width))]
                               (get lookup [x y] [:div.cell.empty]))])]
     (h/html [:head
-             [:meta {:link "rel"
-                     :href "styles.css"}]]
+             [:style (slurp "styles.css")]]
            [:body
             [:section.grid grid]
             [:section.questions.questions--h
@@ -93,4 +92,3 @@
   (from-cell-list
    (to-cell-list {:xc 3, :yc 1, :direction "h", :length 11, :answer "UEBERHOLUNG"})))
 
-(defn -main [& args])

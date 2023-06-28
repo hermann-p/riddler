@@ -21,6 +21,7 @@
             installPhase = ''
               mkdir -p $out/bin
               cp create-riddle $out/bin/
+              cp styles.css $out/bin/
             '';
           };
 

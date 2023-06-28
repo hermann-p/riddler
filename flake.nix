@@ -12,5 +12,21 @@
             buildInputs = [ clojure babashka ];
 
           };
+        packages = rec {
+          default = pkgs.stdenv.mkDerivation {
+            name = "create-riddle";
+            version = "0.1.0";
+            src = self;
+            buildInputs = [ pkgs.babashka ];
+            installPhase = ''
+              mkdir -p $out/bin
+              cp create-riddle $out/bin/
+            '';
+          };
+
+        };
+        apps = rec {
+          default = utils.lib.mkApp { drv = self.packages.${system}.default; };
+        };
       });
 }

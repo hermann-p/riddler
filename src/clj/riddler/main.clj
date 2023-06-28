@@ -1,11 +1,12 @@
-(ns clj.riddler.main
+(ns riddler.main
   (:require [cheshire.core :as json]
-            [hiccup.page :refer [html5 include-css]]))
+            [hiccup2.core :as h]))
+
+(defn parse-input [string]
+  (json/parse-string string true))
 
 (defn read-input [file-name]
-  (json/parse-string
-   (slurp file-name)
-   true)) ;; keywordize
+  (parse-input (slurp file-name))) ;; keywordize
 
 (defn get-grid-size [input {:keys [dir coord]}]
   (->> (:questions input)
@@ -64,8 +65,9 @@
         grid (for [y (range 1 (inc height))]
               [:div.grid-row (for [x (range 1 (inc width))]
                               (get lookup [x y] [:div.cell.empty]))])]
-    (html5 [:head
-            (include-css "styles.css")]
+    (h/html [:head
+             [:meta {:link "rel"
+                     :href "styles.css"}]]
            [:body
             [:section.grid grid]
             [:section.questions.questions--h
@@ -90,3 +92,5 @@
   (spit "index.html"  (transform-input (read-input  "969.json")))
   (from-cell-list
    (to-cell-list {:xc 3, :yc 1, :direction "h", :length 11, :answer "UEBERHOLUNG"})))
+
+(defn -main [& args])

@@ -54,6 +54,16 @@
        (map (fn [{:keys [nr question]}]
               [:span.question [:span.question__id nr] [:span.question__text] question]))))
 
+(defn add-image [input]
+  (when-let [{:keys [xcoord ycoord width height url]} (:image input)]
+    [:img {:src url
+           :style {:position "absolute"
+                   :left "50%"
+                   :top "50%"
+                   :height (format "calc(%s * 1cm)" height)
+                   :width (format "calc(%s * 1cm)" width)
+                   :transform "translate(-50%, -50%)"}}]))
+
 (defn transform-input [input]
   (let [[width height] (get-grid-dims input)
         questions (:questions input)
@@ -67,7 +77,8 @@
     (h/html [:head
              [:style (slurp "styles.css")]]
            [:body
-            [:section.grid grid]
+            [:section.grid grid
+             (add-image input)]
             [:section.questions.questions--h
              [:span.title "Waagrecht:"]
              (get-questions "h" questions)]

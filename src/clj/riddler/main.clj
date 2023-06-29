@@ -20,14 +20,13 @@
   [(get-grid-size input {:dir "h", :coord :xc})
    (get-grid-size input {:dir "v", :coord :yc})])
 
-(defn to-cell-list [{:keys [xc yc length direction answer nr]}]
+(defn to-cell-list [{:keys [xc yc length direction nr]}]
   (cons [[xc yc] {:kind (if (= "v" direction) :start--v :start--h)
-                  :letter (subs answer 0 1)
                   :nr nr}]
         (map (fn [d]
                [[(if (= "v" direction) xc (+ d xc))
                  (if (= "v" direction) (+ d yc) yc)]
-                {:class :cell, :letter (subs answer d (inc d))}])
+                {:class :cell}])
              (range 1 length))))
 
 (defn from-cell-list [cells]

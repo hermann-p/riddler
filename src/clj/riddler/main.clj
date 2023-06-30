@@ -31,13 +31,15 @@
 
 (defn from-cell-list [cells]
   (reduce (fn [acc [pos {:keys [kind nr]}]]
-            (update acc pos (fn [elem]
-                              (if elem
-                                (-> elem
-                                    (update :kinds conj kind)
-                                    (#(if nr (assoc % :nr nr) %)))
-                                {:kinds #{kind}
-                                 :nr nr}))))
+            (let [kind (when kind (name kind))]
+              (update acc pos (fn [elem]
+                                (if elem
+                                 (-> elem
+                                     (update :kinds conj kind)
+                                     (#(if nr (assoc % :nr nr) %)))
+                                 {:kinds #{kind}
+                                  :nr nr})))))
+                             
           {}
           cells))
 

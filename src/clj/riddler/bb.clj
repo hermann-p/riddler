@@ -12,7 +12,7 @@
                   :number {:coerce :string}})
 
 (defn display-riddle [input]
-  (->> input transform-input (format "%s") println))
+  (->> input transform-input str println))
 
 (defn create-from-json [file-name]
   (display-riddle (read-input file-name)))

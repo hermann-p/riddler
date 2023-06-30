@@ -1,6 +1,7 @@
 (ns riddler.main
   (:require [cheshire.core :as json]
-            [hiccup2.core :as h]))
+            [hiccup2.core :as h]
+            [riddler.styles :refer [style cell-width cell-height]]))
 
 (defn parse-input [string]
   (json/parse-string string true))
@@ -57,14 +58,16 @@
               [:span.question [:span.question__id nr] [:span.question__text] question]))))
 
 (defn add-image [input]
-  (when-let [{:keys [xcoord ycoord width height url]} (:image input)]
-    [:img {:src url
-           :style {:position "absolute"
-                   :left "50%"
-                   :top "50%"
-                   :height (format "calc(%s * 1cm)" height)
-                   :width (format "calc(%s * 1cm)" width)
-                   :transform "translate(-50%, -50%)"}}]))
+  (let [calc-dim (fn [s unit] (format "calc(%s * %s)" s unit))]
+    (when-let [{:keys [xcoord ycoord width height url]} (:image input)]
+      [:img {:src url
+             :style {:position "absolute"
+                     :left (calc-dim (dec xcoord)  cell-width)
+                     :top (calc-dim (dec ycoord) cell-height)
+                     :height (calc-dim height cell-height)
+                     :width (calc-dim width cell-width)}}])))
+                     
+    
 
 (defn transform-input [input]
   (let [[width height] (get-grid-dims input)
@@ -77,10 +80,12 @@
               [:div.grid-row (for [x (range 1 (inc width))]
                               (get lookup [x y] [:div.cell.empty]))])]
     (h/html [:head
-             [:style (slurp "styles.css")]]
+             [:meta {:charset "utf-8"}]
+             [:style style]]
            [:body
-            [:section.grid grid
-             (add-image input)]
+            [:section.puzzle
+             [:div.grid grid
+              (add-image input)]]
             [:section.questions.questions--h
              [:span.title "Waagrecht:"]
              (get-questions "h" questions)]

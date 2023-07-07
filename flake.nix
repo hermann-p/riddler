@@ -24,7 +24,7 @@
             DEPS_CP = cljdeps.makeClasspaths { };
             installPhase = ''
               mkdir -p $out/bin
-              cp create-riddle $out/bin/
+              cp -r create-riddle bb.edn src $out/bin/
             '';
           };
 

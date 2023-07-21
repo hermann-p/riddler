@@ -10,17 +10,13 @@
         cljdeps =
           import ./deps.nix { inherit (pkgs) fetchMavenArtifact fetchgit lib; };
       in {
-        devShell = with pkgs;
-          mkShell {
-            buildInputs = [ clojure babashka ];
-
-          };
+        devShell = with pkgs; mkShell { buildInputs = [ clojure babashka ]; };
         packages = rec {
           default = pkgs.stdenv.mkDerivation {
             name = "create-riddle";
             version = "0.1.0";
             src = self;
-            buildInputs = [ pkgs.babashka ];
+            buildInputs = [ pkgs.jre_minimal pkgs.babashka ];
             DEPS_CP = cljdeps.makeClasspaths { };
             installPhase = ''
               mkdir -p $out/bin
